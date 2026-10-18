@@ -1,0 +1,160 @@
+TAP version 13
+# Subtest: default mode never touches an adapter or spends
+ok 1 - default mode never touches an adapter or spends
+  ---
+  duration_ms: 1.0993
+  type: 'test'
+  ...
+# Subtest: live execution and wrong simulation adapters fail closed
+ok 2 - live execution and wrong simulation adapters fail closed
+  ---
+  duration_ms: 0.3193
+  type: 'test'
+  ...
+# Subtest: 8 decisions reserve once, pay once each and release unused funds
+ok 3 - 8 decisions reserve once, pay once each and release unused funds
+  ---
+  duration_ms: 76.179
+  type: 'test'
+  ...
+# Subtest: duplicate identity is idempotent but changed input is rejected
+ok 4 - duplicate identity is idempotent but changed input is rejected
+  ---
+  duration_ms: 14.7441
+  type: 'test'
+  ...
+# Subtest: atomic reservations reject oversubscription across worker instances
+ok 5 - atomic reservations reject oversubscription across worker instances
+  ---
+  duration_ms: 16.6668
+  type: 'test'
+  ...
+# Subtest: lost broadcast reply and process restart reconcile without paying again
+ok 6 - lost broadcast reply and process restart reconcile without paying again
+  ---
+  duration_ms: 23.9287
+  type: 'test'
+  ...
+# Subtest: unseen transaction rebroadcasts identical signed bytes and nonce
+ok 7 - unseen transaction rebroadcasts identical signed bytes and nonce
+  ---
+  duration_ms: 20.2542
+  type: 'test'
+  ...
+# Subtest: pending confirmation prevents new payment or automatic replacement
+ok 8 - pending confirmation prevents new payment or automatic replacement
+  ---
+  duration_ms: 19.3966
+  type: 'test'
+  ...
+# Subtest: crash during signing can retry preparation; no send occurred
+ok 9 - crash during signing can retry preparation; no send occurred
+  ---
+  duration_ms: 18.4718
+  type: 'test'
+  ...
+# Subtest: reorg and mismatched result block further spending and keep reservations
+ok 10 - reorg and mismatched result block further spending and keep reservations
+  ---
+  duration_ms: 21.6006
+  type: 'test'
+  ...
+# Subtest: confirmed wrong body is never treated as the expected decision payment
+ok 11 - confirmed wrong body is never treated as the expected decision payment
+  ---
+  duration_ms: 18.6515
+  type: 'test'
+  ...
+# Subtest: confirmed revert is recorded without automatic new paid attempt
+ok 12 - confirmed revert is recorded without automatic new paid attempt
+  ---
+  duration_ms: 21.1454
+  type: 'test'
+  ...
+# Subtest: gas exhaustion, IMD exhaustion, price change and provider outage send nothing
+ok 13 - gas exhaustion, IMD exhaustion, price change and provider outage send nothing
+  ---
+  duration_ms: 25.6231
+  type: 'test'
+  ...
+# Subtest: automatic maintenance prepares only fixed contract functions and is durable
+ok 14 - automatic maintenance prepares only fixed contract functions and is durable
+  ---
+  duration_ms: 23.3387
+  type: 'test'
+  ...
+# Subtest: lease fences concurrent workers and expires safely
+ok 15 - lease fences concurrent workers and expires safely
+  ---
+  duration_ms: 23.0251
+  type: 'test'
+  ...
+# Subtest: 16 simultaneous BO5 budgets account for 128 maximum decisions
+ok 16 - 16 simultaneous BO5 budgets account for 128 maximum decisions
+  ---
+  duration_ms: 24.3963
+  type: 'test'
+  ...
+# Subtest: a deep reorg after confirmation halts the persistent worker before more spending
+ok 17 - a deep reorg after confirmation halts the persistent worker before more spending
+  ---
+  duration_ms: 24.9283
+  type: 'test'
+  ...
+# Subtest: loopback adapter rejects public RPCs even with simulation mode
+ok 18 - loopback adapter rejects public RPCs even with simulation mode
+  ---
+  duration_ms: 0.4127
+  type: 'test'
+  ...
+# Subtest: server admission reserves eight decisions plus a configured buffer
+ok 19 - server admission reserves eight decisions plus a configured buffer
+  ---
+  duration_ms: 16.6126
+  type: 'test'
+  ...
+# Subtest: server queue freezes explicit public fields and refuses invalid oracle outputs
+ok 20 - server queue freezes explicit public fields and refuses invalid oracle outputs
+  ---
+  duration_ms: 14.2213
+  type: 'test'
+  ...
+# Subtest: background service remains inert with default disabled configuration
+ok 21 - background service remains inert with default disabled configuration
+  ---
+  duration_ms: 0.2873
+  type: 'test'
+  ...
+# Subtest: permissionless fee settlement cannot strand unsigned maintenance ahead of requests
+ok 22 - permissionless fee settlement cannot strand unsigned maintenance ahead of requests
+  ---
+  duration_ms: 21.0348
+  type: 'test'
+  ...
+# Subtest: partial permissionless settlement resizes unsigned maintenance, never signed bytes
+ok 23 - partial permissionless settlement resizes unsigned maintenance, never signed bytes
+  ---
+  duration_ms: 19.3248
+  type: 'test'
+  ...
+# Subtest: admission holds the coordinator lease across its asynchronous balance snapshot
+ok 24 - admission holds the coordinator lease across its asynchronous balance snapshot
+  ---
+  duration_ms: 18.868
+  type: 'test'
+  ...
+# Subtest: admission rejects a stale balance snapshot after lease expiry
+ok 25 - admission rejects a stale balance snapshot after lease expiry
+  ---
+  duration_ms: 14.9825
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 982.5312

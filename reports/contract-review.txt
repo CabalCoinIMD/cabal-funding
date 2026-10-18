@@ -1,0 +1,144 @@
+CABAL FUNDING CONTRACT AND FACTORY REVIEW
+18 October 2026
+
+Outcome
+The 4/4 custom fee and 70/30 funding design passed this review's tests. The
+deployed Robinhood IMD LaunchFactory path was verified on a disposable local fork,
+including the actual IMD token, PoolManager, LaunchFees and Intake runtimes. No
+public launch, publication, paid request or real expenditure occurred.
+
+This is an implementation review by the coding agent, not an independent audit,
+an IMD approval, or a guarantee that no vulnerability remains.
+
+Findings fixed
+M1 - Stale permissionless maintenance could block paid request processing.
+Location: worker/engine.mjs; worker/store.mjs.
+Anyone can call harvest/payTreasury. If another caller settled some or all of a
+saved unsigned maintenance operation, its next gas estimation reverted. The worker
+retried the same stale amount indefinitely and could hold requests behind it.
+The worker now resizes only unsigned maintenance to the available balance, or
+marks it superseded if nothing remains. Signed transactions are never rewritten.
+Regression tests cover complete and partial external settlement, including the
+immutability of already-signed bytes. Severity: medium availability issue.
+
+M2 - Admission could use a stale funding balance during payment reconciliation.
+Location: worker/budget.mjs.
+Admission read the chain asynchronously before reserving funds. A simultaneous
+worker could finalize a payment and reduce the database reservation between the
+balance read and new admission, counting already-spent funds as available.
+Admission now holds and checks the same coordinator lease across its balance read
+and reservation. Concurrent workers cannot reconcile during that window; expired
+leases refuse the reservation. Two regression tests cover both cases.
+Severity: medium reservation/availability issue; not an on-chain withdrawal exploit.
+
+Launch preparation gap addressed
+The component package had the hook and mock tokens but no production launch token.
+Added LaunchToken: Cabal Coin / CABAL, exactly 1 billion, 18 decimals, no constructor
+arguments, no privileged minting and plain transfers. It mints to the deploying
+factory so the factory can perform the supply allocation. This remains local code.
+
+Contract review coverage
+- Tax bases and exact-input/output deltas on buys and sells, both token orderings.
+- Claims rather than immediate withdrawal during swaps, including token-only seed.
+- Cumulative rounding, reserve solvency, IMD claim backing and separate treasury.
+- Permissionless settlement with fixed destinations; failure rollback and reentrancy.
+- Factory-only first initialization; fixed bound pool; manager-only callbacks.
+- Immutable tax/split/intake/treasury, explicit owner and worker authority boundaries.
+- Exact intake approval/debit, duplicate decision keys, limits, expiry and daily reset.
+- Partial-fill atomic rollback, prefunding and direct-donation accounting.
+- Constructor shape, hook CREATE2 permissions and deployed runtime size.
+No additional reproducible high/critical contract defect was identified in this
+scope. This does not clear all dependency or economic risks.
+
+Factory compatibility evidence
+Network snapshot: Robinhood chain 4663, block 91997011.
+Hash: 0xd765f2d85478357d57ab7aa94d9870884727e41537c320be76c15cb9740abf3f.
+Source: explorer-verified LaunchFactory, HookFlags, PoolFees, LaunchFees,
+LaunchRegistry and MerkleDistributor; current IMD hook policy version 30.
+Machine-readable runtime hashes and balances: reports/factory-fork-review.json.
+
+PASS: Six static address constructor arguments; explicit owner, no external
+constructor calls. Factory accepts constructor-appended creation code.
+PASS: Token/hook address predictions match the actual factory CREATE2 deployment.
+PASS: Hook mask 0x20cc includes beforeInitialize. The initializer sender is the
+LaunchFactory, matching the hook's immutable factory check.
+PASS: Token-only liquidity seeding and initialized bound pool in both orderings.
+PASS: All four swap modes per ordering, 4% custom fee and 70/30 allocation.
+PASS: Fixed treasury payout and separate platform fee claim, without consuming
+our request reserve. Pool fee 12500, requester share 8000/10000, verified on fork.
+PASS: A local payment through the real Intake code debits exactly 0.5 IMD and
+clears approval. This produced no real chain event or off-chain oracle job.
+PASS: Hook runtime 9,962 bytes, below the 24,576-byte EVM limit.
+
+Selected test figures (same in both currency orderings)
+100 IMD initial buy -> 4 IMD custom tax. Following four swap modes, total tax:
+4.026382909430939684 IMD; request allocation 2.818468036601657778 IMD;
+treasury 1.207914872829281906 IMD. Separate collected IMD-side platform fees:
+0.962753868286664115 to the requester, 0.240688467071666029 to the network.
+
+Local verification
+18 Solidity tests passed, including 1,536 randomized cases. The mixed-operation
+property test checks all ledgers after 40 actions in each of its 512 cases.
+25 worker tests passed, including the four new recovery/concurrency regressions.
+Local worker/contract E2E passed after the fixes: eight payments and lost-reply
+restart recovery, no duplicate charge. Two factory fork scenarios passed.
+
+Subsequent production-router review, same date
+The deployed UniversalRouter, V4Quoter and Permit2 also passed on a local fork in
+both currency orderings. Eight quoted trade modes matched actual execution.
+Slippage, deadlines, approvals, stale prices and unfillable orders were exercised.
+See production-router-review.txt/json for the snapshot, evidence and limitations.
+No production hook or payment-worker changes were needed. Quoting rejects
+liquidity-bound partial fills; the observed UI then refuses submission. Smaller
+fillable orders quote normally. The raw-router partial-sell test leaves unused
+input with the trader and taxes only filled output. No browser-wallet test occurred.
+
+PvP eligibility addition and revalidation, same date
+LaunchToken now exposes a fixed PVP_MINIMUM_HOLDING of 50,000 CABAL and the
+read-only isPvpEligible(address) view. Token supply and transfer behavior are
+unchanged. A new boundary/transfer regression brings the Solidity suite to
+19 passing tests, still including 1,536 randomized cases. The latest production
+router report exercises the updated token deployed by the actual factory and
+checks its threshold/view in both currency orderings. The original factory-only
+report is historical evidence for the earlier token revision. This addition is
+not an independent audit. The game server must enforce entry separately.
+
+Residual launch requirements and limits
+1. IMD's off-chain build, manifest and independent review have not run for this
+   source. Use launch kind univ4_hook, not an evm_project launch with its default
+   guard. Manifest arguments: $poolManager, $factory, Robinhood IMD, Robinhood
+   Intake, $owner, and the explicitly designated treasury. No launch.json was made.
+2. Owner, treasury and supply remainder roles are assigned in the separate launch
+   draft. Worker, caps and minimum reserve remain unset. Do not fund a predicted
+   address before the approved manifest and deployment are checked.
+3. The original factory test used a Uniswap test router. The subsequent review
+   exercises the deployed production router/quoter locally. Recheck current
+   deployments, frontend encoding and the final pool before trading opens. Pin
+   the reviewed source repository/commit; IMD adaptation can change tested code.
+4. Request payments need the game coordinator, durable database, signer injection,
+   IMD result verification and timeout behavior. Those are not enabled here.
+5. The worker is trusted to ask legitimate questions within caps. A compromised
+   worker can waste its allowed daily request budget. The owner can raise caps;
+   limits therefore do not constrain a compromised owner. UTC-day limits allow
+   spending on both sides of midnight, rather than imposing a rolling 24-hour cap.
+6. The treasury and Intake are immutable, and there is no arbitrary owner sweep.
+   A bad treasury address, lost owner key, or retired Intake can strand funds or
+   administration. Do not prefund large sums until addresses and lifecycle are set.
+7. This review assumes the deployed IMD token and PoolManager remain suitable;
+   no fee-on-transfer/rebasing token or arbitrary pool pairing is supported.
+8. Trading volume does not guarantee sufficient IMD revenue, nor does the tax fund
+   the worker's native ETH gas. Funding/maintenance require a running coordinator.
+9. Windows Foundry Solar preprocessing emits import-resolution diagnostics; solc
+   compilation and EVM tests pass. No Slither/static-analysis clearance is claimed.
+
+Safety and privacy
+The fork's public RPC proxy allows only read methods. Writes went exclusively to
+local chain 31337; the deployer was impersonated locally and fixture IMD was added
+through local storage. No real wallet key, project account or branded launch body
+was submitted to IMD. Live execution remains disabled.
+
+Primary references
+https://imd.fun/docs/
+https://api.imd.fun/launch/policies
+https://api.imd.fun/reads/skill/uniswap-v4-hooks
+https://robin.etherscan.io/address/0xa25b02a1e93903b790e6aaf7da1b8b8d50294645#code

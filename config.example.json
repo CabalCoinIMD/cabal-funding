@@ -1,0 +1,21 @@
+{
+  "mode": "disabled",
+  "chainId": 4663,
+  "rpcUrl": "https://rpc.mainnet.chain.robinhood.com",
+  "apiUrl": "https://api.imd.fun",
+  "contract": null,
+  "deploymentBlock": null,
+  "runtimeCodeHash": null,
+  "treasury": null,
+  "worker": null,
+  "imd": "0x5f7bb59365ce557c26dbcaa4ee9d39a4b95b7127",
+  "intake": "0xa43e6f75ee006411f79ac1c84120606c2330de82",
+  "confirmations": 2,
+  "requestPriceAtomic": "500000000000000000",
+  "maxGasPerTransactionWei": null,
+  "minimumGasBalanceWei": null,
+  "minimumImdReserveAtomic": null,
+  "maintenanceMinAtomic": "1000000000000000000",
+  "dailyLimitAtomic": null,
+  "liveExecutionApproved": false
+}

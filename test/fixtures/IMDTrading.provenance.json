@@ -1,0 +1,45 @@
+{
+  "retrievedAt": "2026-10-18",
+  "chainId": 4663,
+  "snapshot": {
+    "chainId": 4663,
+    "blockNumber": 92014305,
+    "blockHash": "0xbbed66a99689e770097fa7a3c6ced3082d92c3985c0ab545dcd0d995ac2d0b21"
+  },
+  "frontend": {
+    "url": "https://explorer.imd.fun/_next/static/chunks/1fjby1-gan7u4.js",
+    "sha256": "10526d0ca8c43c535d03c1083b14c3a699ce77b5d88abc38b7b7dc73ff78cb5b",
+    "inspection": "Downloaded and inspected as text; not executed.",
+    "command": "0x10",
+    "actions": "0x060c0f",
+    "extendedSwapParams": true,
+    "minHopPriceX36": "0",
+    "slippageBps": 100,
+    "deadlineSeconds": 600,
+    "exactInputOnlyInUi": true
+  },
+  "contracts": {
+    "router": {
+      "address": "0x8876789976decbfcbbbe364623c63652db8c0904",
+      "sourceUrl": "https://robin.etherscan.io/address/0x8876789976decbfcbbbe364623c63652db8c0904#code",
+      "runtimeKeccak256": "0x2ce6aaaf9f4151f5e1cbf774668772f17f532ae11b15e9284fd0a072a8b0fbde",
+      "abiSha256": "444068f29b2a75db2ebb83a5ef81ccc59f1dc33a6eaa57fdc7563e63b0eb421e",
+      "extractedSourceFileSha256": "ae07e61cf0905b8161b5f5a379102daa69ca558fec0e675874cf8b214bb85b1a"
+    },
+    "quoter": {
+      "address": "0x8dc178efb8111bb0973dd9d722ebeff267c98f94",
+      "sourceUrl": "https://robin.etherscan.io/address/0x8dc178efb8111bb0973dd9d722ebeff267c98f94#code",
+      "runtimeKeccak256": "0xd707b1da8cb165e5ea35a3b4450d971eb562ec171e23492aa117036b78a868f6",
+      "abiSha256": "b2ca92becdccc4384136da966ce542388801c9a60bc96ab376b5ca8cc73abac5",
+      "extractedSourceFileSha256": "1391c06cd9b24a81b75851c7f7f0f1ca7b8719f3f2f90882ec8ae12f3b675fb8"
+    },
+    "permit2": {
+      "address": "0x000000000022d473030f116ddee9f6b43ac78ba3",
+      "runtimeKeccak256": "0x5208783f52488f7d3493e5e38311ab707c1d75457fe472a19b0b4d57d66a7fca"
+    }
+  },
+  "limits": [
+    "Explorer source verification was inspected; compiler equivalence was not independently rebuilt. Tests execute the actual forked runtime, whose hash is pinned.",
+    "No actual browser wallet interaction or real pool transaction occurred."
+  ]
+}

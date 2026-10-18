@@ -1,0 +1,13 @@
+{
+  "retrievedAt": "2026-10-18",
+  "chainId": 4663,
+  "address": "0xa25b02a1e93903b790e6aaf7da1b8b8d50294645",
+  "sourceUrl": "https://robin.etherscan.io/address/0xa25b02a1e93903b790e6aaf7da1b8b8d50294645#code",
+  "documentationUrl": "https://imd.fun/docs/",
+  "abiSha256": "58fc2d3d9b30648fac59ef71e959bfcca17dcb8f32ed1d420809bef279436933",
+  "extractedExplorerSourceJsonSha256": "3302b6fa944c82c7fdafcaa7906eb575af64725fd83782739ab70ccbe4f86cca",
+  "observedFactoryRuntimeKeccak256": "0x0f2b731631e11e699de1f5922c8b5b25e386c2784e7ad2ac22a3b3174416f100",
+  "compiler": "0.8.26",
+  "optimizerRuns": 200,
+  "use": "ABI data for a local fork test; not a launch manifest or external approval"
+}
